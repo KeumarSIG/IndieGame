@@ -1,0 +1,27 @@
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2008
+
+Project("{BB4A9B57-56F6-4B8C-8682-D77ABF8FCB08}") = "BumpingGame", "Assembly-CSharp-vs.csproj", "{0083653D-EAAF-43E7-453B-ED2FD633BFE0}"
+EndProject
+Project("{BB4A9B57-56F6-4B8C-8682-D77ABF8FCB08}") = "BumpingGame", "Assembly-CSharp-Editor-vs.csproj", "{39F4BD50-B5B6-EFF4-369E-609B0C9DFF5C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{0083653D-EAAF-43E7-453B-ED2FD633BFE0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0083653D-EAAF-43E7-453B-ED2FD633BFE0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0083653D-EAAF-43E7-453B-ED2FD633BFE0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0083653D-EAAF-43E7-453B-ED2FD633BFE0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{39F4BD50-B5B6-EFF4-369E-609B0C9DFF5C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{39F4BD50-B5B6-EFF4-369E-609B0C9DFF5C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{39F4BD50-B5B6-EFF4-369E-609B0C9DFF5C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{39F4BD50-B5B6-EFF4-369E-609B0C9DFF5C}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	
+EndGlobal
