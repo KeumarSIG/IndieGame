@@ -58,7 +58,6 @@
      <Compile Include="Assets\Scripts\HazardLinearMovement.cs" />
      <Compile Include="Assets\Scripts\Kendo.cs" />
      <Compile Include="Assets\Scripts\SoundManager.cs" />
-     <Compile Include="Assets\Scripts\Temporary_Player_2.cs" />
      <Compile Include="Assets\Scripts\UpdateScore.cs" />
      <Compile Include="Assets\Shaders\Ascii\Scripts\Ascii.cs" />
      <Compile Include="Assets\Shaders\Retro Pixel\Scripts\RetroPixel.cs" />
