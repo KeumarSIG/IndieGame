@@ -104,7 +104,7 @@ public class GameInitialization : MonoBehaviour
     IEnumerator SetEventLastUp()
     {
         yield return new WaitForSeconds(1.5f);
-        m_camera.GetComponent<CameraPosition>().enabled = true;
+        //m_camera.GetComponent<CameraPosition>().enabled = true;
 		m_playerOne.GetComponent<CharacterManagement>().enabled = true;
 		m_playerOne.GetComponent<CharacterManagement>().m_canMove = true;
 		m_playerTwo.GetComponent<CharacterManagement>().enabled = true;
@@ -115,25 +115,21 @@ public class GameInitialization : MonoBehaviour
 	IEnumerator ReadyToRumble()
 	{
 		yield return new WaitForSeconds(0.5f);
+
 		m_letsGetReadyToRumble[0].SetActive(true); // Let's
 		yield return new WaitForSeconds(0.5f);
 
 		m_letsGetReadyToRumble[1].SetActive(true); // get
 		yield return new WaitForSeconds(0.5f);
 
-		//m_letsGetReadyToRumble[0].SetActive(false); // Let's
 		m_letsGetReadyToRumble[2].SetActive(true); // ready
 		yield return new WaitForSeconds(0.5f);
 
-		//m_letsGetReadyToRumble[1].SetActive(false); // get
 		m_letsGetReadyToRumble[3].SetActive(true); // to
 		yield return new WaitForSeconds(0.5f);
 
-		//m_letsGetReadyToRumble[2].SetActive(false); // ready
 		m_letsGetReadyToRumble[4].SetActive(true); // Rumble
 		yield return new WaitForSeconds(0.5f);
-
-		//m_letsGetReadyToRumble[3].SetActive(false); // to
 
 		m_eventRumble = false;
 		m_eventLast = true;

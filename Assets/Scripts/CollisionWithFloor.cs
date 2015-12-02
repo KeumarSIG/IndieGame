@@ -4,12 +4,13 @@ using System.Collections;
 public class CollisionWithFloor : MonoBehaviour 
 {
 	CharacterManagement m_referenceToCharacterMovement; // Ref to self
+    CollisionWithDeathZones m_refToCollisionWithDeathZones;
 
     void Start()
 	{
 		m_referenceToCharacterMovement = GetComponent<CharacterManagement>();
-	}
-
+        m_refToCollisionWithDeathZones = GetComponent<CollisionWithDeathZones>();
+    }
 
 
 	// If player collides with the floor
@@ -20,25 +21,10 @@ public class CollisionWithFloor : MonoBehaviour
             if (m_referenceToCharacterMovement.m_canMove == false)
             {
                 m_referenceToCharacterMovement.m_canMove = true; // used when the player respawns
+                m_refToCollisionWithDeathZones.m_hasScoredPoints = false;
             }
-
-            /*
-            if (transform.eulerAngles != Vector3.zero)
-            {
-                StartCoroutine(ResetCharacterAngle()); // used to make sure the angle of the player is correct ; MIGHT BE DEPRECATED
-            }
-            */
 
             if (m_referenceToCharacterMovement.m_isJumping == true) m_referenceToCharacterMovement.m_isJumping = false; // If char was jumping, now he is not !!
         }
 	}
-
-	// Reset char angle
-    /*
-	IEnumerator ResetCharacterAngle()
-	{
-		yield return new WaitForSeconds(1.5f);
-		transform.eulerAngles = Vector3.zero;
-	}
-    */
 }
