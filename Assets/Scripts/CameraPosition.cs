@@ -41,12 +41,16 @@ public class CameraPosition : MonoBehaviour
 	// =====
     Camera m_thisCamera;
     
+
+
     void Start()
     {
         m_thisCamera = GetComponent<Camera>(); // Reference to this gameobject
 		transform.eulerAngles = new Vector3(m_cameraAngle, 0, 0);
 		//StartCoroutine(SetAngleUp());
     }
+
+
 
 	void Update ()
     {
@@ -59,20 +63,4 @@ public class CameraPosition : MonoBehaviour
         m_thisCamera.fieldOfView = Mathf.Lerp(m_thisCamera.fieldOfView, dist * 2f, lerpSpeed * Time.deltaTime); // Lerp FOV modification ; dist * 2 → defines FOV
         m_thisCamera.fieldOfView = Mathf.Clamp(m_thisCamera.fieldOfView, m_fovMin, m_fovMax); // Clamp FOV
     }
-
-	/*
-	IEnumerator SetAngleUp()
-	{
-		yield return new WaitForSeconds(0.25f);
-		transform.eulerAngles = new Vector3(80, 0, 0);
-		yield return new WaitForSeconds(0.25f);
-		transform.eulerAngles = new Vector3(70, 0, 0);
-		yield return new WaitForSeconds(0.25f);
-		transform.eulerAngles = new Vector3(60, 0, 0);
-		yield return new WaitForSeconds(0.25f);
-		transform.eulerAngles = new Vector3(50, 0, 0);
-		yield return new WaitForSeconds(0.25f);
-		transform.eulerAngles = new Vector3(45, 0, 0);
-	}
-	*/
 }

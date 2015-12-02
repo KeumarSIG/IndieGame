@@ -4,19 +4,34 @@ using System.Collections;
 public class CharacterManagement : MonoBehaviour
 {
     // MULTI
+    [Tooltip("The player's number")]
     public int m_playerNumber;
+
+    [Tooltip("Last player who hit this player")]
+    /*[HideInInspector]*/ public int m_lastPlayerWhoHit;
+
+    // Game buttons
     string button_horizontal;
     string button_vertical;
     string button_attack;
     string button_jump;
+    string button_grappin;
     // MULTI
 
     // Movement related (mostly speed, but not only)
+    [Tooltip("The car's acceleration")]
     public float m_acceleration;
-	public float m_maxSpeed;
-	public float m_speedBackToZero;
 
+    [Tooltip("The maximum speed of the car")]
+    public float m_maxSpeed;
+
+    [Tooltip("The time it takes to go back from current speed to 0")]
+    public float m_speedBackToZero;
+
+    [Tooltip("The particles associated to movement")]
     public GameObject m_movementParticle;
+
+    [Tooltip("The sound associated to movement")]
     public AudioClip m_movementAudio;
 
     [HideInInspector] public bool m_canMove;
@@ -26,33 +41,55 @@ public class CharacterManagement : MonoBehaviour
     Vector3 m_movement;
 
     // Jump
+    [Tooltip("The height of jump")]
     public float m_jumpPower;
-	public AudioClip m_jumpAudio;
+
+    [Tooltip("The sound associated with the jump")]
+    public AudioClip m_jumpAudio;
+
     [HideInInspector] public bool m_isJumping;
 
     // Kendo
-	public GameObject m_kendoStick;
-	public AudioClip m_kendoAudio;
-	public float m_kendoCooldownDuration;
-	public float m_kendoBumpDuration;
-	public float m_kendoBumpDecrease;
-	public float m_kendoAttackDuration;
-    [HideInInspector] public bool m_kendoBumped;
-	bool m_kendoCooldown; 
+    [Tooltip("The kendo gameobject")]
+    public GameObject m_kendoStick;
 
-	// Super attack
+    [Tooltip("The sound associated with the kendo")]
+    public AudioClip m_kendoAudio;
+
+    [Tooltip("The time between two kendo attacks")]
+    public float m_kendoCooldownDuration;
+
+    [Tooltip("The amount of time the player cannot move because of the bump")]
+    public float m_kendoBumpDuration;
+
+    [Tooltip("How much from the bump should be removed if you jump")]
+    public float m_kendoBumpDecrease;
+
+    [Tooltip("How much time does the kendo attack lasts ?")]
+    public float m_kendoAttackDuration;
+
+    [HideInInspector] public bool m_kendoBumped;
+	bool m_kendoCooldown;
+
+    [Tooltip("Percentage of enemy kendo bump reduction")]
+    public float m_armor;
+
+    // Super attack
+    /*
     public GameObject m_superAttack;
     public float m_superAttackDuration;
     public float m_superAttackEndingLag;
+    */
 
     // Gun
-    public GameObject m_bullet;
+    //public GameObject m_bullet;
 
     // Movement
-	
+
 
     // Death
-	public AudioClip m_deathAudio;
+    [Tooltip("The sound associated with player's death")]
+    public AudioClip m_deathAudio;
 
 	[HideInInspector] public int m_playerScore;
 	
@@ -66,21 +103,11 @@ public class CharacterManagement : MonoBehaviour
 	// Controls init
     void Awake()
     {
-		if (m_playerNumber == 1)
-        {
-            button_horizontal = "Horizontal";
-            button_jump = "Jump";
-            button_attack = "Attack";
-            button_vertical = "Vertical";
-        }
-
-        else if (m_playerNumber == 2)
-        {
-            button_horizontal = "Horizontal_360";
-            button_jump = "Jump_360";
-            button_attack = "Attack_360";
-            button_vertical = "Vertical_360";
-        }
+        button_horizontal = "L_XAxis_" + m_playerNumber;
+        button_vertical = "L_YAxis_" + m_playerNumber;
+        button_attack = "RB_" + m_playerNumber;
+        button_jump = "A_" + m_playerNumber;
+        button_grappin = "LB_" + m_playerNumber;
     }
 
 	// Char init
@@ -96,10 +123,8 @@ public class CharacterManagement : MonoBehaviour
 	}
 	
     void Update()
-    {
+    {  
 		// Movement
-
-		// Temporary lines... Will be replaced to handle a controller ; Changes direction of the player according to where he moves... Will be two separated things later on
 		Vector3 charDir = new Vector3(Input.GetAxisRaw(button_horizontal), 0, Input.GetAxisRaw(button_vertical));
 		if (charDir != Vector3.zero) m_lastDir = charDir;
 		transform.rotation = Quaternion.LookRotation(m_lastDir);
@@ -123,7 +148,7 @@ public class CharacterManagement : MonoBehaviour
 
 
 		// Kendo
-		if (Input.GetAxisRaw(button_attack) == 1 && m_kendoCooldown == true)
+		if (Input.GetButtonDown(button_attack) == true && m_kendoCooldown == true)
 		{
 			// Kendo
 			if (m_kendoStick.activeInHierarchy == false) 
@@ -137,7 +162,7 @@ public class CharacterManagement : MonoBehaviour
 
 
 		// Jumping might be better in fixed update, isn't it ? 
-		if (Input.GetAxisRaw(button_jump) == 1 && IsGrounded())
+		if (Input.GetButtonDown(button_jump) == true && IsGrounded())
 		{
             m_isJumping = true;
 
@@ -149,6 +174,14 @@ public class CharacterManagement : MonoBehaviour
 				m_kendoBumped = false; // The technique can only occur once at the time.
 			}
 		}
+
+        // Grappin
+        if (Input.GetButtonDown(button_grappin) == true)
+        {
+            // Code grappin ici
+        }
+               
+
 
 
 		// Only if the character is moving
