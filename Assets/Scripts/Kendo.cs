@@ -16,7 +16,7 @@ public class Kendo : MonoBehaviour
 		if (coll.gameObject.tag == "Player")
 		{
             CharacterManagement refToOtherPlayer = coll.gameObject.GetComponent<CharacterManagement>(); // ref to other player management script
-            refToOtherPlayer.m_lastPlayerWhoHit = m_kendoNumber; // last player hit variable actualization
+//          refToOtherPlayer.m_lastPlayerWhoHit = m_kendoNumber; // last player hit variable actualization
 
             Vector3 thisCharDir = GetComponentInParent<CharacterManagement>().m_lastDir; // Uses the direction of the attacking player to bump the enemy in the same direction.
             coll.attachedRigidbody.velocity = thisCharDir * (m_kendoBump - (m_kendoBump * (refToOtherPlayer.m_armor * 0.01f))); // The actual bump ; formula →    direction * (bumpPower - (bumpPower * armor/100))

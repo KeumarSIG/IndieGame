@@ -18,11 +18,6 @@ public class CharacterManagement : MonoBehaviour
     string button_jump;
     string button_grappin;
 
-    internal void BonusArmor(float m_bonusArmorDuration)
-    {
-        throw new NotImplementedException();
-    }
-
     // MULTI
 
     // Movement related (mostly speed, but not only)
@@ -43,7 +38,7 @@ public class CharacterManagement : MonoBehaviour
 
     [HideInInspector] public bool m_canMove;
     [HideInInspector] public float m_speed;
-    [HideInInspector] public Vector3 m_lastDir;
+    /*[HideInInspector]*/ public Vector3 m_lastDir;
 
     Vector3 m_movement;
 
@@ -119,12 +114,11 @@ public class CharacterManagement : MonoBehaviour
         button_jump = "A_" + m_playerNumber;
         button_grappin = "LB_" + m_playerNumber;
         
-
         // Keyboard
         /*
         button_horizontal = "Horizontal";
         button_vertical = "Vertical";
-        button_attack = "RB_" + m_playerNumber;
+        button_attack = "Fire1";
         button_jump = "A_" + m_playerNumber;
         button_grappin = "LB_" + m_playerNumber;
         */
@@ -147,8 +141,8 @@ public class CharacterManagement : MonoBehaviour
     {  
 		// Movement
 		Vector3 charDir = new Vector3(Input.GetAxisRaw(button_horizontal), 0, Input.GetAxisRaw(button_vertical));
-		if (charDir != Vector3.zero) m_lastDir = charDir;
-		transform.rotation = Quaternion.LookRotation(m_lastDir);
+        if (charDir != Vector3.zero) m_lastDir = charDir;
+        transform.rotation = Quaternion.LookRotation(m_lastDir);
 
 
 
@@ -230,13 +224,14 @@ public class CharacterManagement : MonoBehaviour
     }
 
 
+
 	// Handles movement
 	void FixedUpdate ()
     {
 		int i = m_canMove ? 1 : 0; // "i" is used to get the value of m_canMove as an int and not a bool
         m_movement = new Vector3(Input.GetAxisRaw(button_horizontal), 0f, Input.GetAxisRaw(button_vertical)).normalized * i; 
 		m_rb.MovePosition(m_rb.position + m_movement * m_speed * Time.deltaTime); // actual movement
-	}
+    }
 
 
 
@@ -267,6 +262,8 @@ public class CharacterManagement : MonoBehaviour
 		m_kendoStick.SetActive(false);
 	}
 
+
+
 	// Kendo cooldown
 	IEnumerator KendoCooldown()
 	{
@@ -292,6 +289,8 @@ public class CharacterManagement : MonoBehaviour
 		m_movementParticle.SetActive(false);
 	}
 
+
+
     public void BonusLauncher(string bonus, float duration)
     {
         switch (bonus)
@@ -302,16 +301,29 @@ public class CharacterManagement : MonoBehaviour
         }
     }
 
-    IEnumerator ArmorBonus(float bonusDuration)
+
+
+    // Reset the armor to its normal amount
+    IEnumerator ArmorBonus(float bonusDuration) 
     {
-        print("ALLO");
         yield return new WaitForSeconds(bonusDuration);
-        print("HELLO");
         m_armor = m_basicArmor;
-        transform.localScale = new Vector3(1, 1, 1);
     }
 
 
+
+    void OnColliderEnter (Collider coll)
+    {
+        if (coll.gameObject.tag == "Kendo")
+        {
+            m_lastPlayerWhoHit = coll.gameObject.GetComponent<Kendo>().m_kendoNumber;
+        }
+
+        if (coll.gameObject.CompareTag("Player") == true)
+        {
+            m_lastPlayerWhoHit = coll.gameObject.GetComponent<CharacterManagement>().m_playerNumber;
+        }
+    }
 
     // Super attack
 	/*
