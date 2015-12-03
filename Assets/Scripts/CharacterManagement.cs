@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System;
 
 public class CharacterManagement : MonoBehaviour
 {
@@ -16,6 +17,12 @@ public class CharacterManagement : MonoBehaviour
     string button_attack;
     string button_jump;
     string button_grappin;
+
+    internal void BonusArmor(float m_bonusArmorDuration)
+    {
+        throw new NotImplementedException();
+    }
+
     // MULTI
 
     // Movement related (mostly speed, but not only)
@@ -73,6 +80,7 @@ public class CharacterManagement : MonoBehaviour
 
     [Tooltip("Percentage of enemy kendo bump reduction")]
     public float m_armor;
+    float m_basicArmor;
 
     // Super attack
     /*
@@ -84,7 +92,8 @@ public class CharacterManagement : MonoBehaviour
     // Gun
     //public GameObject m_bullet;
 
-    // Movement
+    // Bonus
+    bool m_bonusArmor;
 
 
     // Death
@@ -103,16 +112,28 @@ public class CharacterManagement : MonoBehaviour
 	// Controls init
     void Awake()
     {
+        // Controller
         button_horizontal = "L_XAxis_" + m_playerNumber;
         button_vertical = "L_YAxis_" + m_playerNumber;
         button_attack = "RB_" + m_playerNumber;
         button_jump = "A_" + m_playerNumber;
         button_grappin = "LB_" + m_playerNumber;
+        
+
+        // Keyboard
+        /*
+        button_horizontal = "Horizontal";
+        button_vertical = "Vertical";
+        button_attack = "RB_" + m_playerNumber;
+        button_jump = "A_" + m_playerNumber;
+        button_grappin = "LB_" + m_playerNumber;
+        */
     }
 
 	// Char init
 	void Start ()
     {
+        m_basicArmor = m_armor;
 		m_kendoCooldown = true;
 		m_thisAudioSource = GetComponent<AudioSource>();
 		m_canMove = false;
@@ -270,6 +291,25 @@ public class CharacterManagement : MonoBehaviour
 		yield return new WaitForSeconds(m_movementParticle.GetComponent<ParticleSystem>().duration * 0.25f);
 		m_movementParticle.SetActive(false);
 	}
+
+    public void BonusLauncher(string bonus, float duration)
+    {
+        switch (bonus)
+        {
+            case "BonusArmor": // armure bonus
+                StartCoroutine(ArmorBonus(duration));
+            break;
+        }
+    }
+
+    IEnumerator ArmorBonus(float bonusDuration)
+    {
+        print("ALLO");
+        yield return new WaitForSeconds(bonusDuration);
+        print("HELLO");
+        m_armor = m_basicArmor;
+        transform.localScale = new Vector3(1, 1, 1);
+    }
 
 
 

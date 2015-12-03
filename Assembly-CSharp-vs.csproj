@@ -5,7 +5,7 @@
 	<Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
 	<ProductVersion>10.0.20506</ProductVersion>
 	<SchemaVersion>2.0</SchemaVersion>
-	<ProjectGuid>{0083653D-EAAF-43E7-453B-ED2FD633BFE0}</ProjectGuid>
+	<ProjectGuid>{2403F6C5-C6EA-0EEF-B693-16980C4190CF}</ProjectGuid>
 	<OutputType>Library</OutputType>
 	<AppDesignerFolder>Properties</AppDesignerFolder>
 	<RootNamespace></RootNamespace>
@@ -46,6 +46,8 @@
 	</Reference>
   </ItemGroup>
   <ItemGroup>
+     <Compile Include="Assets\Asset Store\Lava_Flowing_Shader\Scripts\ScrollingUVs_Layers.cs" />
+     <Compile Include="Assets\BonusArmor.cs" />
      <Compile Include="Assets\Scripts\AnisoDrag.cs" />
      <Compile Include="Assets\Scripts\BasicHazardMovement.cs" />
      <Compile Include="Assets\Scripts\CameraPosition.cs" />
@@ -72,9 +74,12 @@
      <None Include="Assets\Shaders\Retro Pixel\Resources\Shaders\RetroPixel8.shader" />
      <None Include="Assets\Shaders\Ascii\Resources\Shaders\Ascii.shader" />
      <None Include="Assets\Shaders\Retro Pixel\Resources\Shaders\RetroPixel4.shader" />
+     <None Include="Assets\Asset Store\Lava_Flowing_Shader\Shaders\Unlit_Lava_Simple.shader" />
      <None Include="Assets\Shaders\Retro Pixel\Resources\Shaders\RetroPixel6.shader" />
+     <None Include="Assets\Asset Store\Lava_Flowing_Shader\Shaders\Unlit_Lava_Distort.shader" />
      <None Include="Assets\Shaders\Retro Pixel\Resources\Shaders\RetroPixel3.shader" />
      <None Include="Assets\Shaders\Ascii\Changelog.txt" />
+     <None Include="Assets\Asset Store\Lava_Flowing_Shader\ReadMe.txt" />
      <None Include="Assets\Shaders\Retro Pixel\Resources\Shaders\RetroPixel7.shader" />
      <None Include="Assets\Shaders\Retro Pixel\Resources\Shaders\RetroPixel2.shader" />
      <None Include="Assets\Shaders\Retro Pixel\Readme.txt" />
