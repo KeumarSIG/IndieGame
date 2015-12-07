@@ -8,9 +8,9 @@ public class GrappinProjectile : MonoBehaviour
     [HideInInspector]
     public Grappin origin;
 
-	//La vitesse du grappin
+	[Tooltip ("La vitesse du grappin")]
 	public float speed;
-	//Le temps après lequel le grappin s'autodétruit
+	[Tooltip ("Le temps après lequel le grappin s'autodétruit")]
 	public float timerDeath;
 
 	void Start ()
@@ -22,16 +22,31 @@ public class GrappinProjectile : MonoBehaviour
 	{
 		//On avance
 		transform.position = transform.position + transform.forward * speed / 60;
+
+		//On place la corde
+		origin.placerCorde (origin.transform.position, transform.position);
 	}
 
 	void OnCollisionEnter (Collision coll)
 	{
 		//Si on rentre dans quelque chose (qui n'est pas notre origine), on attache la corde entre les deux et on se détruit
-		if (coll.gameObject.GetComponent<CharacterManagement>() != null && coll.gameObject != origin.gameObject) 
+		GameObject cgo = coll.gameObject;
+		if ((cgo.tag == "Movable" || cgo.tag == "Player" || cgo.tag == "Unmovable") && cgo != origin.gameObject) 
 		{
 			origin.m_target = coll.collider.attachedRigidbody;
 			origin.m_longueur = (coll.transform.position - origin.transform.position).magnitude;
-			Destroy(this.gameObject);
+
+			if (cgo.tag == "Movable" || cgo.tag == "Player")
+            {
+                origin.pullTarget = true;
+            }
+				
+			if (cgo.tag == "Unmovable")
+            {
+                origin.pullTarget = false;
+            }
+
+            Destroy(gameObject);
 		}
 	}
 

@@ -5,15 +5,20 @@ public class Kendo : MonoBehaviour
 {
 	[Tooltip("The force of the kendo's bump")]
 	public float m_kendoBump;
-    [Tooltip("The kendo's number == the player's number")]
-    public int m_kendoNumber;
+    public int m_chanceToTriggerSlowMotion;
+    public Gamefeel m_refToGamefeel; // ref to gamefeel manager
 
-	public Gamefeel m_refToGamefeel;
+    [HideInInspector] public int m_kendoNumber;
 
-	// =====
-	// If the kendo hits an enemy player
-	// =====
-		void OnTriggerEnter(Collider coll)
+    void Awake()
+    {
+        m_kendoNumber = GetComponentInParent<CharacterManagement>().m_playerNumber;
+    }
+
+    // =====
+    // If the kendo hits an enemy player
+    // =====
+    void OnTriggerEnter(Collider coll)
 	{
 		if (coll.gameObject.tag == "Player")
 		{
@@ -26,10 +31,13 @@ public class Kendo : MonoBehaviour
             refToOtherPlayer.m_kendoBumped = true; // Tell the bumped character he is bumped (used so that he can jump to reduce the bump intensity)
 		
 			int triggerSlowMotion = Random.Range(0, 100);
-			if (triggerSlowMotion <= 10)
+			if (triggerSlowMotion <= m_chanceToTriggerSlowMotion)
 			{
-				m_refToGamefeel.GetComponent<Gamefeel>().GamefeelTrigger("CameraSwitch", m_kendoNumber.ToString());
-			}
+                //m_refToGamefeel.GetComponent<Gamefeel>().GamefeelTrigger("CameraSwitch", m_kendoNumber.ToString());
+                //m_refToGamefeel.GetComponent<Gamefeel>().GamefeelTrigger("ScreenShake", "Default");
+                m_refToGamefeel.GetComponent<Gamefeel>().GamefeelTrigger("CameraSwitch", coll.GetComponent<CharacterManagement>().m_playerNumber.ToString());
+                print(coll.GetComponent<CharacterManagement>().m_playerNumber.ToString());                                     
+            }
 		}
 	}
 }

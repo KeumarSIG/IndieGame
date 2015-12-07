@@ -79,6 +79,8 @@ public class CharacterManagement : MonoBehaviour
     public float m_armor;
     float m_basicArmor;
 
+    public GameObject m_grappin;
+
     // Super attack
     /*
     public GameObject m_superAttack;
@@ -101,7 +103,7 @@ public class CharacterManagement : MonoBehaviour
 	[HideInInspector] public int m_playerScore;
 	
 
-	AudioSource m_thisAudioSource; // ref to this audiosource component
+	//AudioSource m_thisAudioSource; // ref to this audiosource component
 	float m_distToGround;
 	GameObject m_gun;
 	Rigidbody m_rb;
@@ -116,56 +118,11 @@ public class CharacterManagement : MonoBehaviour
     {
 		button_horizontal = "L_XAxis_" + m_playerNumber;
     	button_vertical = "L_YAxis_" + m_playerNumber;
-    	button_attack = "RB_" + m_playerNumber;
+    	button_attack = "X_" + m_playerNumber;
     	button_jump = "A_" + m_playerNumber;
-    	button_grappin = "LB_" + m_playerNumber;
+    	button_grappin = "B_" + m_playerNumber;
 		button_restart = "Start_" + m_playerNumber;
 		button_changeLevel = "Back_" + m_playerNumber;
-		/*
-		if (m_playerNumber == 1)
-		{
-			button_horizontal = "L_XAxis_1";
-			button_vertical = "L_YAxis_1";
-			button_attack = "RB_1";
-			button_jump = "A_1";
-			button_grappin = "LB_1";
-			button_restart = "Start_0";
-			button_changeLevel = "Back_0";
-		}
-
-		else if (m_playerNumber == 2)
-		{
-			button_horizontal = "Horizontal";
-			button_vertical = "Vertical";
-			button_attack = "Fire1";
-			button_jump = "A_2";
-			button_grappin = "LB_2";
-			button_restart = "Start_0";
-			button_changeLevel = "Back_0";
-		}
-
-		else if (m_playerNumber == 3)
-		{
-			button_horizontal = "Horizontal";
-			button_vertical = "Vertical";
-			button_attack = "Fire1";
-			button_jump = "A_2";
-			button_grappin = "LB_2";
-			button_restart = "Start_0";
-			button_changeLevel = "Back_0";
-		}
-
-		else if (m_playerNumber == 4)
-		{
-			button_horizontal = "Horizontal";
-			button_vertical = "Vertical";
-			button_attack = "Fire1";
-			button_jump = "A_2";
-			button_grappin = "LB_2";
-			button_restart = "Start_0";
-			button_changeLevel = "Back_0";
-		}
-		*/
     }
 
 	// Char init
@@ -174,7 +131,7 @@ public class CharacterManagement : MonoBehaviour
         m_anim = GetComponent<Animator>();
         m_basicArmor = m_armor;
 		m_kendoCooldown = true;
-		m_thisAudioSource = GetComponent<AudioSource>();
+		//m_thisAudioSource = GetComponent<AudioSource>();
 		m_canMove = false;
         m_rb = GetComponent<Rigidbody>();
 		m_distToGround = 2f;
@@ -238,14 +195,15 @@ public class CharacterManagement : MonoBehaviour
         // Grappin
         if (Input.GetButtonDown(button_grappin) == true)
         {
-            // Code grappin ici
+            GetComponent<Grappin>().lancerGrappin(m_grappin);
         }
 
 		// Only if the character is moving
 		// Add movement particle effect
+        /*
 		if (m_movement != Vector3.zero && m_movementParticle.activeInHierarchy == false) m_movementParticle.SetActive(true);
 		else if (m_movement == Vector3.zero) StartCoroutine(ClearMovementParticles());
-
+        */
 		// Play moving sound
 		/*
 		if (IsGrounded ()) 
@@ -287,6 +245,7 @@ public class CharacterManagement : MonoBehaviour
 		int i = m_canMove ? 1 : 0; // "i" is used to get the value of m_canMove as an int and not a bool
         m_movement = new Vector3(Input.GetAxisRaw(button_horizontal), 0f, Input.GetAxisRaw(button_vertical)).normalized * i; 
 		m_rb.MovePosition(m_rb.position + m_movement * m_speed * Time.deltaTime); // actual movement
+        
     }
 
 

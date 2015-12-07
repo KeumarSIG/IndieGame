@@ -11,10 +11,16 @@ public class Gamefeel : MonoBehaviour
 	float m_originalShake;
 	Vector3 m_originalCameraPosition;
 
+    // Slow-motion and camera
+    public float m_slowMotionAmount;
+    [Tooltip("In seconds")]
+    public float m_slowMotionDuration;
+
 	void Awake()
 	{
 		m_originalShake = m_shake;
-	}
+        //m_slowMotionAmount = m_slowMotionAmount * 0.01f;
+    }
 
 	public void GamefeelTrigger(string gamefeel, string playerNumber)
 	{
@@ -44,21 +50,38 @@ public class Gamefeel : MonoBehaviour
 			m_shake -= Time.deltaTime * m_shakeDecrease;
 			yield return new WaitForEndOfFrame();
 		}
+
 		m_shake = m_originalShake;
 	}
 
 	IEnumerator CameraSwitch(string playerNumber)
 	{
-		Time.timeScale *= 0.5f;
-		Time.fixedDeltaTime *= 0.5f;
+        // Slowmotion
+		Time.timeScale *= m_slowMotionAmount;
+		Time.fixedDeltaTime *= m_slowMotionAmount;
+        m_mainCamera.GetComponent<AudioSource>().pitch *= 0.8f      ;
+
+        if (Time.timeScale < 0.1) Time.timeScale = 0.1f;
+        if (Time.fixedDeltaTime < 0.002) Time.fixedDeltaTime = 0.002f;
+
+        // Make camera follow a certain player
 		m_mainCamera.GetComponent<CameraPosition>().m_isFollowingPlayer = true;
-		m_mainCamera.GetComponent<CameraPosition>().m_playerFollowed = playerNumber;
+		m_mainCamera.GetComponent<CameraPosition>().m_playerFollowed = playerNumber;                            
 
-		yield return new WaitForSeconds(0.25f);
+		yield return new WaitForSeconds(m_slowMotionDuration);
 
-		Time.timeScale = 1;
-		Time.fixedDeltaTime = 0.02f;
-		m_mainCamera.GetComponent<CameraPosition>().m_isFollowingPlayer = false;
+        while (Time.timeScale < 0.9)
+        {
+            Time.timeScale *= 1.05f; // basic time scale
+            Time.fixedDeltaTime *= 1.05f; // basic fixedDeltaTime
+            m_mainCamera.GetComponent<AudioSource>().pitch *= 1.05f;
+            yield return new WaitForEndOfFrame();
+        }
+
+        Time.timeScale = 1f; // basic time scale
+        Time.fixedDeltaTime = 0.02f; // basic fixedDeltaTime
+        m_mainCamera.GetComponent<AudioSource>().pitch = 1;
+        m_mainCamera.GetComponent<CameraPosition>().m_isFollowingPlayer = false;
 		m_mainCamera.GetComponent<CameraPosition>().m_playerFollowed = "0";
 	}
 }

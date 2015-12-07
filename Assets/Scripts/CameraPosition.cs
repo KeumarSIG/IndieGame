@@ -30,8 +30,6 @@ public class CameraPosition : MonoBehaviour
     {
 		if (m_isFollowingPlayer == false)
 		{
-			/*if (transform.eulerAngles != Vector3(m_cameraAngle, 0, 0))*/ transform.eulerAngles = new Vector3(m_cameraAngle, 0, 0);
-
 	        switch (m_numberOfPlayers)
 	        {
 	            // 2 Players
@@ -53,25 +51,32 @@ public class CameraPosition : MonoBehaviour
 
 		else // If slowmotion is activated
 		{
-			m_thisCamera.fieldOfView = Mathf.Lerp(m_thisCamera.fieldOfView, 30, 0.001f); // Lerp FOV modification ; dist * 2 → defines FOV
+			m_thisCamera.fieldOfView = Mathf.Lerp(m_thisCamera.fieldOfView, 30, Time.deltaTime * 5); // Lerp FOV modification ; dist * 2 → defines FOV
 
 			switch (m_playerFollowed)
 			{
 				case "1":
-					transform.LookAt(m_playerOne.transform.position);
+                    Quaternion targetRotation1 = Quaternion.LookRotation(m_playerOne.transform.position - transform.position);
+                    transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation1, Time.deltaTime);
 					break;
 
 				case "2":
-					transform.LookAt(m_playerTwo.transform.position);
-					break;
+                    Quaternion targetRotation2 = Quaternion.LookRotation(m_playerTwo.transform.position - transform.position);
+                    transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation2, Time.deltaTime * 5);
+                    //transform.LookAt(m_playerTwo.transform.position);
+                    break;
 
 				case "3":
-					transform.LookAt(m_playerThree.transform.position);
-					break;
+                    Quaternion targetRotation3 = Quaternion.LookRotation(m_playerThree.transform.position - transform.position);
+                    transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation3, Time.deltaTime * 5);
+                    //transform.LookAt(m_playerThree.transform.position);
+                    break;
 
 				case "4":
-					transform.LookAt(m_playerFour.transform.position);
-					break;
+                    Quaternion targetRotation4 = Quaternion.LookRotation(m_playerFour.transform.position - transform.position);
+                    transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation4, Time.deltaTime * 5);
+                    //transform.LookAt(m_playerFour.transform.position);
+                    break;
 			}
 		}
         
@@ -100,11 +105,13 @@ public class CameraPosition : MonoBehaviour
 
     void MoveCamera(float newPosX, float newPosZ, Vector3 centroid)
     {
-        //float dist = Vector3.Distance(m_playerOne.transform.position, centroid); // Dist between the two players
+        float dist = Vector3.Distance(m_playerOne.transform.position, centroid); // Dist between the two players
 
         transform.position = Vector3.Lerp(transform.position, new Vector3(newPosX, m_cameraHeight, newPosZ - m_zModifier), Time.deltaTime * m_lerpSpeed * 5f); // Moves the camera to this position
-		m_thisCamera.fieldOfView = Mathf.Lerp(m_thisCamera.fieldOfView, 60, 0.01f); // Lerp FOV modification ; dist * 2 → defines FOV
-		//m_thisCamera.fieldOfView = Mathf.Lerp(m_thisCamera.fieldOfView, centroid.magnitude * 2, m_lerpSpeed * Time.deltaTime); // Lerp FOV modification ; dist * 2 → defines FOV
-        //m_thisCamera.fieldOfView = Mathf.Clamp(m_thisCamera.fieldOfView, m_fovMin, m_fovMax); // Clamp FOV
+
+        Quaternion targetRotation = Quaternion.LookRotation(centroid - transform.position);
+        transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, 0.01f);
+
+        m_thisCamera.fieldOfView = Mathf.Lerp(m_thisCamera.fieldOfView, 60, Time.deltaTime);
     }
 }
