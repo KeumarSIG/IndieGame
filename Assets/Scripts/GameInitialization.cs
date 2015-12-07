@@ -7,6 +7,8 @@ public class GameInitialization : MonoBehaviour
 	public Camera m_camera;
 	public GameObject m_playerOne;
 	public GameObject m_playerTwo;
+	public GameObject m_playerThree;
+	public GameObject m_playerFour;
 
 
 	Vector3 m_originalCameraPosition;
@@ -104,11 +106,15 @@ public class GameInitialization : MonoBehaviour
     IEnumerator SetEventLastUp()
     {
         yield return new WaitForSeconds(1.5f);
-        //m_camera.GetComponent<CameraPosition>().enabled = true;
+        m_camera.GetComponent<CameraPosition>().enabled = true;
 		m_playerOne.GetComponent<CharacterManagement>().enabled = true;
 		m_playerOne.GetComponent<CharacterManagement>().m_canMove = true;
 		m_playerTwo.GetComponent<CharacterManagement>().enabled = true;
 		m_playerTwo.GetComponent<CharacterManagement>().m_canMove = true;
+		m_playerThree.GetComponent<CharacterManagement>().enabled = true;
+		m_playerThree.GetComponent<CharacterManagement>().m_canMove = true;
+		m_playerFour.GetComponent<CharacterManagement>().enabled = true;
+		m_playerFour.GetComponent<CharacterManagement>().m_canMove = true;
         Destroy(this.gameObject, 0.1f);
     }
 

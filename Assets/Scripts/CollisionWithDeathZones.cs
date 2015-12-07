@@ -9,6 +9,9 @@ public class CollisionWithDeathZones : MonoBehaviour
     [Tooltip("Particles played on player's death")]
 	public GameObject m_playerDeath; // particles played on player's death
 
+	[Tooltip("Ref to gamefeel manager")]
+	public GameObject m_refToGameFeel;
+
     // =====
     // Respawn position variables
     // =====
@@ -35,10 +38,11 @@ public class CollisionWithDeathZones : MonoBehaviour
 	Vector3 m_randomSpawnPosition;
 
     int m_lastPlayerNumber;
-
+	
     void Start()
     {
         m_hasScoredPoints = false;
+
     }
 
     // =====
@@ -57,8 +61,8 @@ public class CollisionWithDeathZones : MonoBehaviour
 
             // Move player's position
             m_randomSpawnPosition = new Vector3(Random.Range(m_minX, m_maxX),
-                                                 m_Y,
-                                                 Random.Range(m_minZ, m_maxZ));
+                                                m_Y,
+                                                Random.Range(m_minZ, m_maxZ));
 
             refToCharacterManagement.m_canMove = false;
             GetComponent<Rigidbody>().velocity = Vector3.zero;
@@ -93,8 +97,9 @@ public class CollisionWithDeathZones : MonoBehaviour
                 }
             }
 
-            refToCharacterManagement.m_lastPlayerWhoHit = 0;
             m_scoreManager.GetComponent<UpdateScore>().ScoreUpdating(); // Updates the score of the game
+			refToCharacterManagement.m_lastPlayerWhoHit = 0;
+			m_refToGameFeel.GetComponent<Gamefeel>().GamefeelTrigger("ScreenShake", "Default");
         }
     }   
 }

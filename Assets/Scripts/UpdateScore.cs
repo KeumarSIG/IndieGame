@@ -30,7 +30,7 @@ public class UpdateScore : MonoBehaviour
         GetComponent<GUIText>().text =  "Player 1:     " + m_playerOneScore + "   -   " +
                                         "Player 2:     " + m_playerTwoScore + "   -   " +
                                         "Player 3:     " + m_playerThreeScore + "   -   " +
-                                        "Player 4:     " + m_playerFourScore + "   -   ";
+                                        "Player 4:     " + m_playerFourScore;
     }
 
 	public void ScoreUpdating()
@@ -38,6 +38,6 @@ public class UpdateScore : MonoBehaviour
         GetComponent<GUIText>().text =  "Player 1:     " + m_playerOneScore + "   -   " +
                                         "Player 2:     " + m_playerTwoScore + "   -   " +
                                         "Player 3:     " + m_playerThreeScore + "   -   " +
-                                        "Player 4:     " + m_playerFourScore + "   -   ";
+                                        "Player 4:     " + m_playerFourScore;
     }
 }

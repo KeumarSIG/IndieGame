@@ -17,6 +17,8 @@ public class CharacterManagement : MonoBehaviour
     string button_attack;
     string button_jump;
     string button_grappin;
+	string button_restart;
+	string button_changeLevel;
 
     // MULTI
 
@@ -36,9 +38,9 @@ public class CharacterManagement : MonoBehaviour
     [Tooltip("The sound associated to movement")]
     public AudioClip m_movementAudio;
 
-    [HideInInspector] public bool m_canMove;
+    /*[HideInInspector]*/ public bool m_canMove;
     [HideInInspector] public float m_speed;
-    /*[HideInInspector]*/ public Vector3 m_lastDir;
+    [HideInInspector] public Vector3 m_lastDir;
 
     Vector3 m_movement;
 
@@ -84,12 +86,13 @@ public class CharacterManagement : MonoBehaviour
     public float m_superAttackEndingLag;
     */
 
-    // Gun
+    // Bonus
     //public GameObject m_bullet;
 
     // Bonus
     bool m_bonusArmor;
 
+	[HideInInspector] public bool m_hasTeleport;
 
     // Death
     [Tooltip("The sound associated with player's death")]
@@ -103,30 +106,72 @@ public class CharacterManagement : MonoBehaviour
 	GameObject m_gun;
 	Rigidbody m_rb;
 
-
-	// Controls init
+    // Animator
+    [HideInInspector] public Animator m_anim;
+    //[HideInInspector]
+    //public Animation m_animT;
+    
+    // Controls init
     void Awake()
     {
-        // Controller
-        button_horizontal = "L_XAxis_" + m_playerNumber;
-        button_vertical = "L_YAxis_" + m_playerNumber;
-        button_attack = "RB_" + m_playerNumber;
-        button_jump = "A_" + m_playerNumber;
-        button_grappin = "LB_" + m_playerNumber;
-        
-        // Keyboard
-        /*
-        button_horizontal = "Horizontal";
-        button_vertical = "Vertical";
-        button_attack = "Fire1";
-        button_jump = "A_" + m_playerNumber;
-        button_grappin = "LB_" + m_playerNumber;
-        */
+		button_horizontal = "L_XAxis_" + m_playerNumber;
+    	button_vertical = "L_YAxis_" + m_playerNumber;
+    	button_attack = "RB_" + m_playerNumber;
+    	button_jump = "A_" + m_playerNumber;
+    	button_grappin = "LB_" + m_playerNumber;
+		button_restart = "Start_" + m_playerNumber;
+		button_changeLevel = "Back_" + m_playerNumber;
+		/*
+		if (m_playerNumber == 1)
+		{
+			button_horizontal = "L_XAxis_1";
+			button_vertical = "L_YAxis_1";
+			button_attack = "RB_1";
+			button_jump = "A_1";
+			button_grappin = "LB_1";
+			button_restart = "Start_0";
+			button_changeLevel = "Back_0";
+		}
+
+		else if (m_playerNumber == 2)
+		{
+			button_horizontal = "Horizontal";
+			button_vertical = "Vertical";
+			button_attack = "Fire1";
+			button_jump = "A_2";
+			button_grappin = "LB_2";
+			button_restart = "Start_0";
+			button_changeLevel = "Back_0";
+		}
+
+		else if (m_playerNumber == 3)
+		{
+			button_horizontal = "Horizontal";
+			button_vertical = "Vertical";
+			button_attack = "Fire1";
+			button_jump = "A_2";
+			button_grappin = "LB_2";
+			button_restart = "Start_0";
+			button_changeLevel = "Back_0";
+		}
+
+		else if (m_playerNumber == 4)
+		{
+			button_horizontal = "Horizontal";
+			button_vertical = "Vertical";
+			button_attack = "Fire1";
+			button_jump = "A_2";
+			button_grappin = "LB_2";
+			button_restart = "Start_0";
+			button_changeLevel = "Back_0";
+		}
+		*/
     }
 
 	// Char init
 	void Start ()
     {
+        m_anim = GetComponent<Animator>();
         m_basicArmor = m_armor;
 		m_kendoCooldown = true;
 		m_thisAudioSource = GetComponent<AudioSource>();
@@ -154,7 +199,7 @@ public class CharacterManagement : MonoBehaviour
 
 
 
-		// Start a coroutine, and if after "m_speedBackToZero" seconds, the player doesn't press any input anymore, then, the character stops
+		// Start a coroutine, and if after "m_speedBackToZero" seconds, the player doesn't press any input anymore, then, the character stops ; Pas super logique je trouve
 		else if (Input.GetAxisRaw(button_horizontal) == 0 || Input.GetAxisRaw(button_vertical) == 0)
 		{
 			StartCoroutine(GetOriginalSpeedBack());
@@ -195,9 +240,6 @@ public class CharacterManagement : MonoBehaviour
         {
             // Code grappin ici
         }
-               
-
-
 
 		// Only if the character is moving
 		// Add movement particle effect
@@ -205,6 +247,7 @@ public class CharacterManagement : MonoBehaviour
 		else if (m_movement == Vector3.zero) StartCoroutine(ClearMovementParticles());
 
 		// Play moving sound
+		/*
 		if (IsGrounded ()) 
 		{
 			if (m_thisAudioSource.clip == m_jumpAudio) m_thisAudioSource.clip = m_movementAudio;
@@ -212,6 +255,7 @@ public class CharacterManagement : MonoBehaviour
 		}
 
 		else m_thisAudioSource.Pause();
+		*/
         //if (!m_thisAudioSource.isPlaying && !m_thisAudioSource.clip == m_jumpAudio) m_thisAudioSource.Play();
 
         /*
@@ -221,6 +265,18 @@ public class CharacterManagement : MonoBehaviour
             StartCoroutine(SuperAttack());
         }
         */
+
+
+		// Restart level
+		if (Input.GetButtonDown(button_restart) == true)
+		{
+			Application.LoadLevel(0);
+		}
+
+		if (Input.GetButtonDown(button_changeLevel) == true)
+		{
+			Application.LoadLevel(0);
+		}
     }
 
 
@@ -290,6 +346,16 @@ public class CharacterManagement : MonoBehaviour
 	}
 
 
+	public IEnumerator ResetTeleport()
+	{
+		print("Before yield return" + m_hasTeleport);
+
+		yield return new WaitForSeconds(0.5f);
+		m_hasTeleport = false;
+
+		print("After yield return" + m_hasTeleport);
+	}
+
 
     public void BonusLauncher(string bonus, float duration)
     {
@@ -302,12 +368,27 @@ public class CharacterManagement : MonoBehaviour
     }
 
 
+    // Armor
+    public void ArmorAnimation()
+    {          
+        if (m_anim.GetBool("hasBonusArmor") == false)
+        {
+            m_anim.SetBool("hasBonusArmor", true);
+        }
+
+        else if (m_anim.GetBool("hasBonusArmor") == true)
+        {
+            m_anim.SetBool("hasBonusArmor", false);
+        }
+    }
+      
 
     // Reset the armor to its normal amount
     IEnumerator ArmorBonus(float bonusDuration) 
     {
         yield return new WaitForSeconds(bonusDuration);
         m_armor = m_basicArmor;
+        ArmorAnimation();
     }
 
 
