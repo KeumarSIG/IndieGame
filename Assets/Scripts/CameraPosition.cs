@@ -5,8 +5,8 @@ public class CameraPosition : MonoBehaviour
 {
     public float m_cameraAngle;
     public float m_cameraHeight;
-    public float m_fovMin;
-    public float m_fovMax;
+    public float m_followFov;
+    public float m_normalFov;
     public float m_zModifier;
     public float m_lerpSpeed;
     public int m_numberOfPlayers;
@@ -51,7 +51,7 @@ public class CameraPosition : MonoBehaviour
 
 		else // If slowmotion is activated
 		{
-			m_thisCamera.fieldOfView = Mathf.Lerp(m_thisCamera.fieldOfView, 30, Time.deltaTime * 5); // Lerp FOV modification ; dist * 2 → defines FOV
+			m_thisCamera.fieldOfView = Mathf.Lerp(m_thisCamera.fieldOfView, m_followFov, Time.deltaTime * 5); // Lerp FOV modification ; dist * 2 → defines FOV
 
 			switch (m_playerFollowed)
 			{
@@ -112,6 +112,6 @@ public class CameraPosition : MonoBehaviour
         Quaternion targetRotation = Quaternion.LookRotation(centroid - transform.position);
         transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, 0.01f);
 
-        m_thisCamera.fieldOfView = Mathf.Lerp(m_thisCamera.fieldOfView, 60, Time.deltaTime);
+        m_thisCamera.fieldOfView = Mathf.Lerp(m_thisCamera.fieldOfView, m_normalFov, Time.deltaTime);
     }
 }

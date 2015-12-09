@@ -357,6 +357,7 @@ public class CharacterManagement : MonoBehaviour
         if (coll.gameObject.tag == "Kendo")
         {
             m_lastPlayerWhoHit = coll.gameObject.GetComponent<Kendo>().m_kendoNumber;
+			StartCoroutine(ResetLastPlayerWhoHit());
         }
 
         if (coll.gameObject.CompareTag("Player") == true)
@@ -364,6 +365,12 @@ public class CharacterManagement : MonoBehaviour
             m_lastPlayerWhoHit = coll.gameObject.GetComponent<CharacterManagement>().m_playerNumber;
         }
     }
+
+	IEnumerator ResetLastPlayerWhoHit()
+	{
+		yield return new WaitForSeconds(2f * Time.deltaTime);
+		m_lastPlayerWhoHit = 0;
+	}
 
     // Super attack
 	/*

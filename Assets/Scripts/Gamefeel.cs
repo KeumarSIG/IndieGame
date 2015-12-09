@@ -59,7 +59,6 @@ public class Gamefeel : MonoBehaviour
         // Slowmotion
 		Time.timeScale *= m_slowMotionAmount;
 		Time.fixedDeltaTime *= m_slowMotionAmount;
-        m_mainCamera.GetComponent<AudioSource>().pitch *= 0.8f      ;
 
         if (Time.timeScale < 0.1) Time.timeScale = 0.1f;
         if (Time.fixedDeltaTime < 0.002) Time.fixedDeltaTime = 0.002f;
@@ -74,13 +73,12 @@ public class Gamefeel : MonoBehaviour
         {
             Time.timeScale *= 1.05f; // basic time scale
             Time.fixedDeltaTime *= 1.05f; // basic fixedDeltaTime
-            m_mainCamera.GetComponent<AudioSource>().pitch *= 1.05f;
+            //m_mainCamera.GetComponent<AudioSource>().pitch *= 1.05f;
             yield return new WaitForEndOfFrame();
         }
 
         Time.timeScale = 1f; // basic time scale
         Time.fixedDeltaTime = 0.02f; // basic fixedDeltaTime
-        m_mainCamera.GetComponent<AudioSource>().pitch = 1;
         m_mainCamera.GetComponent<CameraPosition>().m_isFollowingPlayer = false;
 		m_mainCamera.GetComponent<CameraPosition>().m_playerFollowed = "0";
 	}

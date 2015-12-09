@@ -36,7 +36,7 @@ public class Kendo : MonoBehaviour
                 //m_refToGamefeel.GetComponent<Gamefeel>().GamefeelTrigger("CameraSwitch", m_kendoNumber.ToString());
                 //m_refToGamefeel.GetComponent<Gamefeel>().GamefeelTrigger("ScreenShake", "Default");
                 m_refToGamefeel.GetComponent<Gamefeel>().GamefeelTrigger("CameraSwitch", coll.GetComponent<CharacterManagement>().m_playerNumber.ToString());
-                print(coll.GetComponent<CharacterManagement>().m_playerNumber.ToString());                                     
+                //print(coll.GetComponent<CharacterManagement>().m_playerNumber.ToString());                                     
             }
 		}
 	}

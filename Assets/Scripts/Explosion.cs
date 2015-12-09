@@ -6,19 +6,14 @@ public class Explosion : MonoBehaviour
 	public float m_radius;
 	public float m_power;
 	public float m_explosiveLift;
-	public float m_exploDuration;
-
+	
+	Animator m_thisAnimator;
 	bool m_explosion;
-	//bool m_coroutineOff;
-	bool m_activated;
 
 	void Start()
 	{
-		m_explosion = false;
-		//m_coroutineOff = true;
-		m_activated = false;
-		StartCoroutine(ActivateInstance());
-		//StartCoroutine(DestroyExplosion());
+		m_thisAnimator = GetComponent<Animator>();
+		print (m_thisAnimator + " :whatevevr");
 	}
 
 	void Update () 
@@ -36,34 +31,25 @@ public class Explosion : MonoBehaviour
 					rb.AddExplosionForce(m_power, exploPosition, m_radius, m_explosiveLift);
 				}
 			}
-
-			//if (m_coroutineOff == true) StartCoroutine(DestroyExplosion());
-		}
+        }
 	}
 
-	void OnCollisionEnter(Collision other)
+	void OnTriggerEnter(Collider other)
 	{
-		if (other.gameObject.tag == "Player" || other.gameObject.tag == "DeathZone" && m_activated == true)
+		if (other.gameObject.tag == "Player")
 		{
-			GetComponent<Rigidbody>().velocity = Vector3.zero;
 			m_explosion = true;
+			m_thisAnimator.SetBool("isBumping", true);
+			print (m_thisAnimator.GetBool("isBumping"));
 		}
 	}
 
-	IEnumerator ActivateInstance()
+	void OnTriggerExit()
 	{
-		yield return new WaitForSeconds(0.1f);
-		m_activated = true;
+		m_explosion = false;
+		m_thisAnimator.SetBool("isBumping", false);
 	}
 
-	/*
-	IEnumerator DestroyExplosion()
-	{
-		m_coroutineOff = false;
-		yield return new WaitForSeconds(m_exploDuration);
-		Destroy (this.gameObject);
-	}
-	*/
 
 	void OnDrawGizmos()
 	{

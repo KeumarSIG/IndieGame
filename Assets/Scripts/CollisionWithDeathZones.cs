@@ -50,8 +50,9 @@ public class CollisionWithDeathZones : MonoBehaviour
     // =====
     void OnCollisionEnter(Collision other)
     {
-        if (other.gameObject.tag == "DeathZone" && this.gameObject.tag == "Player" && m_hasScoredPoints == false)
+        if (other.gameObject.tag == "DeathZone" && this.gameObject.tag == "Player" /*&& m_hasScoredPoints == false*/)
         {
+			UpdateScore refToUpdateScore = m_scoreManager.GetComponent<UpdateScore>();
             CharacterManagement refToCharacterManagement = GetComponent<CharacterManagement>();
             m_hasScoredPoints = true;
 
@@ -72,7 +73,24 @@ public class CollisionWithDeathZones : MonoBehaviour
 
             if (refToCharacterManagement.m_lastPlayerWhoHit == 0)
             {
-                return;
+				switch (refToCharacterManagement.m_playerNumber)
+				{
+					case 1:
+						if (refToUpdateScore.m_playerOneScore > 0) refToUpdateScore.m_playerOneScore--;
+						break;
+						
+					case 2:
+						if (refToUpdateScore.m_playerTwoScore > 0) refToUpdateScore.m_playerTwoScore--;
+						break;
+						
+					case 3:
+						if (refToUpdateScore.m_playerThreeScore > 0) refToUpdateScore.m_playerThreeScore--;
+						break;
+						
+					case 4:
+						if (refToUpdateScore.m_playerFourScore > 0) refToUpdateScore.m_playerFourScore--;
+						break;
+				}
             }
 
             else
@@ -80,19 +98,19 @@ public class CollisionWithDeathZones : MonoBehaviour
                 switch (refToCharacterManagement.m_lastPlayerWhoHit)
                 {
                     case 1:
-                        m_scoreManager.GetComponent<UpdateScore>().m_playerOneScore++;
+						refToUpdateScore.m_playerOneScore++;
                         break;
 
                     case 2:
-                        m_scoreManager.GetComponent<UpdateScore>().m_playerTwoScore++;
+						refToUpdateScore.m_playerTwoScore++;
                         break;
 
                     case 3:
-                        m_scoreManager.GetComponent<UpdateScore>().m_playerThreeScore++;
+						refToUpdateScore.m_playerThreeScore++;
                         break;
 
                     case 4:
-                        m_scoreManager.GetComponent<UpdateScore>().m_playerFourScore++;
+						refToUpdateScore.m_playerFourScore++;
                         break;
                 }
             }
