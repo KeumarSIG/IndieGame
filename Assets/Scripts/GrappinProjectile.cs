@@ -35,18 +35,20 @@ public class GrappinProjectile : MonoBehaviour
 		{
 			origin.m_target = coll.collider.attachedRigidbody;
 			origin.m_longueur = (coll.transform.position - origin.transform.position).magnitude;
-
 			if (cgo.tag == "Movable" || cgo.tag == "Player")
-            {
-                origin.pullTarget = true;
-            }
-				
+				origin.pullTarget = true;
 			if (cgo.tag == "Unmovable")
-            {
-                origin.pullTarget = false;
-            }
-
-            Destroy(gameObject);
+				origin.pullTarget = false;
+			Destroy(this.gameObject);
+		}
+		if (cgo.GetComponent<GrappinProjectile>() != null) 
+		{
+			GrappinProjectile projecEnemy = cgo.GetComponent<GrappinProjectile>();
+			origin.m_target = projecEnemy.origin.GetComponent<Rigidbody>();
+			origin.m_longueur = (coll.transform.position - origin.transform.position).magnitude;
+			origin.pullTarget = true;
+			Destroy(projecEnemy.gameObject);
+			Destroy(this.gameObject);
 		}
 	}
 

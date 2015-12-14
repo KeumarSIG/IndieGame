@@ -13,7 +13,7 @@ public class Explosion : MonoBehaviour
 	void Start()
 	{
 		m_thisAnimator = GetComponent<Animator>();
-		print (m_thisAnimator + " :whatevevr");
+		//print (m_thisAnimator + " :whatevevr");
 	}
 
 	void Update () 
@@ -25,11 +25,14 @@ public class Explosion : MonoBehaviour
 			
 			foreach (Collider hit in hitColliders)
 			{
-				Rigidbody rb = hit.GetComponent<Rigidbody>();
-				if (rb != null)
-				{
-					rb.AddExplosionForce(m_power, exploPosition, m_radius, m_explosiveLift);
-				}
+                if (hit.gameObject.tag == "Player")
+                {
+                    Rigidbody rb = hit.GetComponent<Rigidbody>();
+                    if (rb != null)
+                    {
+                        rb.AddExplosionForce(m_power, exploPosition, m_radius, m_explosiveLift, ForceMode.Impulse);
+                    }
+                }
 			}
         }
 	}
@@ -40,7 +43,7 @@ public class Explosion : MonoBehaviour
 		{
 			m_explosion = true;
 			m_thisAnimator.SetBool("isBumping", true);
-			print (m_thisAnimator.GetBool("isBumping"));
+			//print (m_thisAnimator.GetBool("isBumping"));
 		}
 	}
 

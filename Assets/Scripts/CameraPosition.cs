@@ -105,7 +105,7 @@ public class CameraPosition : MonoBehaviour
 
     void MoveCamera(float newPosX, float newPosZ, Vector3 centroid)
     {
-        float dist = Vector3.Distance(m_playerOne.transform.position, centroid); // Dist between the two players
+        //float dist = Vector3.Distance(m_playerOne.transform.position, centroid); // Dist between the two players
 
         transform.position = Vector3.Lerp(transform.position, new Vector3(newPosX, m_cameraHeight, newPosZ - m_zModifier), Time.deltaTime * m_lerpSpeed * 5f); // Moves the camera to this position
 

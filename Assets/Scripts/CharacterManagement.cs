@@ -16,9 +16,12 @@ public class CharacterManagement : MonoBehaviour
     string button_vertical;
     string button_attack;
     string button_jump;
-    string button_grappin;
+    //string button_grappin;
 	string button_restart;
 	string button_changeLevel;
+    string button_boost;
+    string button_grappin_horizontal;
+    string button_grappin_vertical;
 
     // MULTI
 
@@ -106,7 +109,7 @@ public class CharacterManagement : MonoBehaviour
 	//AudioSource m_thisAudioSource; // ref to this audiosource component
 	float m_distToGround;
 	GameObject m_gun;
-	Rigidbody m_rb;
+	[HideInInspector] public Rigidbody m_rb;
 
     // Animator
     [HideInInspector] public Animator m_anim;
@@ -120,9 +123,12 @@ public class CharacterManagement : MonoBehaviour
     	button_vertical = "L_YAxis_" + m_playerNumber;
     	button_attack = "X_" + m_playerNumber;
     	button_jump = "A_" + m_playerNumber;
-    	button_grappin = "B_" + m_playerNumber;
-		button_restart = "Start_" + m_playerNumber;
-		button_changeLevel = "Back_" + m_playerNumber;
+    	//button_grappin = "B_" + m_playerNumber;
+		button_restart = "Start_0";
+		button_changeLevel = "Back_0";
+        button_boost = "LB_" + m_playerNumber;
+        button_grappin_horizontal = "R_XAxis_" + m_playerNumber;
+        button_grappin_vertical = "R_YAxis_" + m_playerNumber;
     }
 
 	// Char init
@@ -193,40 +199,14 @@ public class CharacterManagement : MonoBehaviour
 		}
 
         // Grappin
-        if (Input.GetButtonDown(button_grappin) == true)
+        if ((Input.GetAxisRaw(button_grappin_horizontal) != 0f || Input.GetAxisRaw(button_grappin_vertical) != 0f))
         {
-            GetComponent<Grappin>().lancerGrappin(m_grappin);
+            Vector3 directionStick = new Vector3((Input.GetAxisRaw(button_grappin_horizontal)), 0f, -Input.GetAxisRaw(button_grappin_vertical)).normalized;
+            GetComponent<Grappin>().lancerGrappin(m_grappin, directionStick);
         }
 
-		// Only if the character is moving
-		// Add movement particle effect
-        /*
-		if (m_movement != Vector3.zero && m_movementParticle.activeInHierarchy == false) m_movementParticle.SetActive(true);
-		else if (m_movement == Vector3.zero) StartCoroutine(ClearMovementParticles());
-        */
-		// Play moving sound
-		/*
-		if (IsGrounded ()) 
-		{
-			if (m_thisAudioSource.clip == m_jumpAudio) m_thisAudioSource.clip = m_movementAudio;
-			m_thisAudioSource.clip = m_movementAudio;
-		}
-
-		else m_thisAudioSource.Pause();
-		*/
-        //if (!m_thisAudioSource.isPlaying && !m_thisAudioSource.clip == m_jumpAudio) m_thisAudioSource.Play();
-
-        /*
-        if (Input.GetKeyDown(KeyCode.Space) && !IsGrounded())
-        {
-            m_rb.velocity = new Vector3(m_rb.velocity.x, -m_jumpPower * 0.5f, m_rb.velocity.z);
-            StartCoroutine(SuperAttack());
-        }
-        */
-
-
-		// Restart level
-		if (Input.GetButtonDown(button_restart) == true)
+        // Restart level
+        if (Input.GetButtonDown(button_restart) == true)
 		{
 			Application.LoadLevel(0);
 		}
@@ -235,8 +215,24 @@ public class CharacterManagement : MonoBehaviour
 		{
 			Application.LoadLevel(0);
 		}
+
+        // Boost
+        {
+            if (Input.GetButtonDown(button_boost) == true)
+            {
+                m_maxSpeed = 60;
+                m_speed = 60;
+                StartCoroutine(BoostTimer());
+            }                    
+        }
     }
 
+    IEnumerator BoostTimer()
+    {
+        yield return new WaitForSeconds(0.25f);
+        m_maxSpeed = 20;
+        m_speed = 20;
+    }
 
 
 	// Handles movement
@@ -307,12 +303,12 @@ public class CharacterManagement : MonoBehaviour
 
 	public IEnumerator ResetTeleport()
 	{
-		print("Before yield return" + m_hasTeleport);
+		//print("Before yield return" + m_hasTeleport);
 
 		yield return new WaitForSeconds(0.5f);
 		m_hasTeleport = false;
 
-		print("After yield return" + m_hasTeleport);
+		//print("After yield return" + m_hasTeleport);
 	}
 
 

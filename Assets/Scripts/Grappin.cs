@@ -10,8 +10,10 @@ public class Grappin : MonoBehaviour {
 
 	//Deux bool pour dire si je me tire et si je tire ma cible. Je vais les retirer pour faire marcher ca autrement
 	public bool pullTarget;
-	//True si ce joueur n'a aucun grappin présent sur la scène (nécessaire pour tirer)
+	//True si ce joueur n'a aucun grappin présent sur la scène
 	public bool m_noGrap;
+	//True si un temps suffisant s'est écoulé depuis le dernier grap
+	bool m_canGrap = true;
 
     [HideInInspector]
 	//Ce qu'on a accroché
@@ -21,11 +23,12 @@ public class Grappin : MonoBehaviour {
     Rigidbody m_self;
 
     //La longueur de la corde (décidée quand le grappin s'accroche)
-    //[HideInInspector]
+    [HideInInspector]
     public float m_longueur;
 	[Tooltip("La vitesse à laquelle on ramène la corde")]
 	public float m_vitesseTractage;
-    float m_hauteurTerrain;
+	[Tooltip("La durée minimale entre deux lancers de grappin")]
+	public float m_coolDownGrap;
 
 
 	void Start () 
@@ -35,8 +38,8 @@ public class Grappin : MonoBehaviour {
 	}
 
 
-	void FixedUpdate () 
-	{ 
+	void Update () 
+	{
 		//Si on est accroché on ne peut pas s'éloigner
 		if (m_target != null) 
 		{
@@ -61,17 +64,8 @@ public class Grappin : MonoBehaviour {
 			m_longueur = 2;
 		}
 
-
-		//Si on appuie sur 4, on lache tout
-		if (Input.GetKeyDown (KeyCode.Keypad4)) 
-		{
-			m_target = null;
-			m_noGrap = true;
-		}
-
 		//Placer la corde entre soi et la cible
-		if (m_self != null && m_target != null)
-        {
+		if (m_self != null && m_target != null) {
 			m_cordeInstance.SetActive (true);
 			placerCorde (m_self.transform.position, m_target.transform.position);
 		} 
@@ -85,7 +79,7 @@ public class Grappin : MonoBehaviour {
 		}
 
 		if (!m_noGrap || m_target != null)
-			transform.position = new Vector3 (transform.position.x, m_hauteurTerrain, transform.position.z);
+			transform.position = new Vector3 (transform.position.x, 0.375f, transform.position.z);
 	}
 
 	//Une fonction pour donner la distance entre moi et ma target
@@ -102,14 +96,11 @@ public class Grappin : MonoBehaviour {
 	//Une fonction pour donner la direction entre moi et ma target
 	Vector3 DirectTarget ()
 	{
-        if (m_self != null && m_target != null)
-        {
-            return (m_self.position - m_target.position).normalized;
-        }
-        else
-        {
-            return Vector3.zero;
-        }
+		if (m_self != null && m_target != null)
+		{
+			return (m_self.position - m_target.position).normalized;
+		}
+		return Vector3.zero;
 	}
 
 
@@ -127,15 +118,22 @@ public class Grappin : MonoBehaviour {
 
 
 	//Une fonction pour lancer le grappin
-	public void lancerGrappin (GameObject grappin)
+	public void lancerGrappin (GameObject grappin, Vector3 direction)
 	{
-        m_hauteurTerrain = transform.position.y;
-		if (m_target == null && /*m_noGrap &&*/ transform.position.y >= 0) 
+		if (m_target == null && m_noGrap && m_canGrap && transform.position.y >= 0) 
 		{
 			GameObject projectile = 
-				Instantiate (grappin, transform.position + transform.forward, this.gameObject.transform.rotation) as GameObject;
+				Instantiate (grappin, transform.position + 2 * direction, Quaternion.LookRotation(direction)) as GameObject;
 			projectile.GetComponent<GrappinProjectile>().origin = this;
 			m_noGrap = false;
+			m_canGrap = false;
+			StartCoroutine(CoolDownGrap());
 		}
+	}
+
+	IEnumerator CoolDownGrap ()
+	{
+		yield return new WaitForSeconds (m_coolDownGrap);
+		m_canGrap = true;
 	}
 }
