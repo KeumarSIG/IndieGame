@@ -33,7 +33,7 @@
 			uniform fixed4 _Color3;
 			uniform fixed4 _Color4;
 	  		uniform sampler2D _MainTex;
-	    
+			
 	  		fixed4 frag (v2f_img i) : COLOR
 	  		{
 	   			fixed3 original = tex2D (_MainTex, i.uv).rgb;
@@ -45,7 +45,7 @@
 	   			fixed dist4 = distance (original, _Color4.rgb);
 	   			
 	   			fixed4 col = fixed4 (0,0,0,0);
-	   			fixed dist = 10.0;
+	   			fixed dist = 50.0;
 
 				if (dist0 < dist)
 				{
@@ -82,6 +82,7 @@
 	  		
 	  		ENDCG
 	 	}
+	
 	}
 	
 	FallBack "Diffuse"

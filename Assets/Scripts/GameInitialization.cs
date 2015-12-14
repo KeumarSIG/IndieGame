@@ -7,6 +7,8 @@ public class GameInitialization : MonoBehaviour
 	public Camera m_camera;
 	public GameObject m_playerOne;
 	public GameObject m_playerTwo;
+	public GameObject m_playerThree;
+	public GameObject m_playerFour;
 
 
 	Vector3 m_originalCameraPosition;
@@ -109,31 +111,31 @@ public class GameInitialization : MonoBehaviour
 		m_playerOne.GetComponent<CharacterManagement>().m_canMove = true;
 		m_playerTwo.GetComponent<CharacterManagement>().enabled = true;
 		m_playerTwo.GetComponent<CharacterManagement>().m_canMove = true;
+		m_playerThree.GetComponent<CharacterManagement>().enabled = true;
+		m_playerThree.GetComponent<CharacterManagement>().m_canMove = true;
+		m_playerFour.GetComponent<CharacterManagement>().enabled = true;
+		m_playerFour.GetComponent<CharacterManagement>().m_canMove = true;
         Destroy(this.gameObject, 0.1f);
     }
 
 	IEnumerator ReadyToRumble()
 	{
 		yield return new WaitForSeconds(0.5f);
+
 		m_letsGetReadyToRumble[0].SetActive(true); // Let's
 		yield return new WaitForSeconds(0.5f);
 
 		m_letsGetReadyToRumble[1].SetActive(true); // get
 		yield return new WaitForSeconds(0.5f);
 
-		//m_letsGetReadyToRumble[0].SetActive(false); // Let's
 		m_letsGetReadyToRumble[2].SetActive(true); // ready
 		yield return new WaitForSeconds(0.5f);
 
-		//m_letsGetReadyToRumble[1].SetActive(false); // get
 		m_letsGetReadyToRumble[3].SetActive(true); // to
 		yield return new WaitForSeconds(0.5f);
 
-		//m_letsGetReadyToRumble[2].SetActive(false); // ready
 		m_letsGetReadyToRumble[4].SetActive(true); // Rumble
 		yield return new WaitForSeconds(0.5f);
-
-		//m_letsGetReadyToRumble[3].SetActive(false); // to
 
 		m_eventRumble = false;
 		m_eventLast = true;

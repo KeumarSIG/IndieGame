@@ -3,76 +3,115 @@ using System.Collections;
 
 public class CameraPosition : MonoBehaviour
 {
-	// =====
-	// Camera position & angle
-	// =====
-	[Tooltip("The X angle of the camera")]
-	public float m_cameraAngle;
+    public float m_cameraAngle;
+    public float m_cameraHeight;
+    public float m_followFov;
+    public float m_normalFov;
+    public float m_zModifier;
+    public float m_lerpSpeed;
+    public int m_numberOfPlayers;
 
-	[Tooltip("The Y of the camera")]
-	public float cameraHeight;
-
-	[Tooltip("The Z of the camera (so that it is not completely top/down)")]
-	public float m_zModifier;
-
-	// =====
-	// Camera FOV
-	// =====
-	[Tooltip("The minimal value the FOV can have")]
-    public float m_fovMin;
-
-	[Tooltip("The maximum value the FOV can have")]
-    public float m_fovMax;
-
-	[Tooltip("Low Value = Slow cam movement ; High Value = Fast camera movement")]
-    public float lerpSpeed;
-	
-	// =====
-	// Players
-	// =====
-	[Tooltip("Reference to player 1")]
     public GameObject m_playerOne;
-
-	[Tooltip("Reference to player 2")]
     public GameObject m_playerTwo;
+    public GameObject m_playerThree;
+    public GameObject m_playerFour;
 
-	// =====
-	// Reference to self
-	// =====
     Camera m_thisCamera;
-    
-    void Start()
+	[HideInInspector] public bool m_isFollowingPlayer;
+	[HideInInspector] public string m_playerFollowed;
+
+	void Start ()
     {
-        m_thisCamera = GetComponent<Camera>(); // Reference to this gameobject
-		transform.eulerAngles = new Vector3(m_cameraAngle, 0, 0);
-		//StartCoroutine(SetAngleUp());
-    }
-
-	void Update ()
-    {
-        // Defines where camera should go
-        Vector3 pos = ((m_playerTwo.transform.position - m_playerOne.transform.position) * 0.5f) + m_playerOne.transform.position; // Defines the point between the two players ; divide by 0.5 to get half
-        transform.position = Vector3.Lerp(transform.position, new Vector3(pos.x, cameraHeight, pos.z - m_zModifier), Time.deltaTime * lerpSpeed * 5f); // Moves the camera to this position
-
-        // Defines the FOV of the camera
-        float dist = Vector3.Distance(m_playerOne.transform.position, m_playerTwo.transform.position); // Dist between the two players
-        m_thisCamera.fieldOfView = Mathf.Lerp(m_thisCamera.fieldOfView, dist * 2f, lerpSpeed * Time.deltaTime); // Lerp FOV modification ; dist * 2 → defines FOV
-        m_thisCamera.fieldOfView = Mathf.Clamp(m_thisCamera.fieldOfView, m_fovMin, m_fovMax); // Clamp FOV
-    }
-
-	/*
-	IEnumerator SetAngleUp()
-	{
-		yield return new WaitForSeconds(0.25f);
-		transform.eulerAngles = new Vector3(80, 0, 0);
-		yield return new WaitForSeconds(0.25f);
-		transform.eulerAngles = new Vector3(70, 0, 0);
-		yield return new WaitForSeconds(0.25f);
-		transform.eulerAngles = new Vector3(60, 0, 0);
-		yield return new WaitForSeconds(0.25f);
-		transform.eulerAngles = new Vector3(50, 0, 0);
-		yield return new WaitForSeconds(0.25f);
-		transform.eulerAngles = new Vector3(45, 0, 0);
+        m_thisCamera = GetComponent<Camera>();
+        transform.eulerAngles = new Vector3(m_cameraAngle, 0, 0);
 	}
-	*/
+
+    void Update()
+    {
+		if (m_isFollowingPlayer == false)
+		{
+	        switch (m_numberOfPlayers)
+	        {
+	            // 2 Players
+	            case 2:
+	                MoveCamera(TwoPlayersCamera().x, TwoPlayersCamera().z, TwoPlayersCamera());
+	            break;
+
+	            // 3 Players
+	            case 3:
+	                MoveCamera(ThreePlayersCamera().x, ThreePlayersCamera().z, ThreePlayersCamera());
+	            break;
+
+	            // 4 Players
+	            case 4:
+	                MoveCamera(FourPlayersCamera().x, FourPlayersCamera().z, FourPlayersCamera());
+	            break;
+	        }
+		}
+
+		else // If slowmotion is activated
+		{
+			m_thisCamera.fieldOfView = Mathf.Lerp(m_thisCamera.fieldOfView, m_followFov, Time.deltaTime * 5); // Lerp FOV modification ; dist * 2 → defines FOV
+
+			switch (m_playerFollowed)
+			{
+				case "1":
+                    Quaternion targetRotation1 = Quaternion.LookRotation(m_playerOne.transform.position - transform.position);
+                    transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation1, Time.deltaTime);
+					break;
+
+				case "2":
+                    Quaternion targetRotation2 = Quaternion.LookRotation(m_playerTwo.transform.position - transform.position);
+                    transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation2, Time.deltaTime * 5);
+                    //transform.LookAt(m_playerTwo.transform.position);
+                    break;
+
+				case "3":
+                    Quaternion targetRotation3 = Quaternion.LookRotation(m_playerThree.transform.position - transform.position);
+                    transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation3, Time.deltaTime * 5);
+                    //transform.LookAt(m_playerThree.transform.position);
+                    break;
+
+				case "4":
+                    Quaternion targetRotation4 = Quaternion.LookRotation(m_playerFour.transform.position - transform.position);
+                    transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation4, Time.deltaTime * 5);
+                    //transform.LookAt(m_playerFour.transform.position);
+                    break;
+			}
+		}
+        
+    }
+
+    Vector3 TwoPlayersCamera()
+    {
+        Vector3 pos = (m_playerOne.transform.position + m_playerTwo.transform.position) * 0.5f;
+        return pos;
+    }
+
+    Vector3 ThreePlayersCamera()
+    {
+        Vector3 pos = (m_playerOne.transform.position + m_playerTwo.transform.position) * 0.5f;
+        Vector3 pos2 = (pos + m_playerThree.transform.position) * 0.5f;
+        return pos2;
+    }
+
+    Vector3 FourPlayersCamera()
+    {
+        Vector3 pos = (m_playerOne.transform.position + m_playerTwo.transform.position) * 0.5f;
+        Vector3 pos2 = (m_playerThree.transform.position + m_playerFour.transform.position) * 0.5f;
+        Vector3 pos3 = (pos + pos2) * 0.5f;
+        return pos3;
+    }
+
+    void MoveCamera(float newPosX, float newPosZ, Vector3 centroid)
+    {
+        //float dist = Vector3.Distance(m_playerOne.transform.position, centroid); // Dist between the two players
+
+        transform.position = Vector3.Lerp(transform.position, new Vector3(newPosX, m_cameraHeight, newPosZ - m_zModifier), Time.deltaTime * m_lerpSpeed * 5f); // Moves the camera to this position
+
+        Quaternion targetRotation = Quaternion.LookRotation(centroid - transform.position);
+        transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, 0.01f);
+
+        m_thisCamera.fieldOfView = Mathf.Lerp(m_thisCamera.fieldOfView, m_normalFov, Time.deltaTime);
+    }
 }
