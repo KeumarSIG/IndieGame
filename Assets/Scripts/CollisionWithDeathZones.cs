@@ -142,10 +142,12 @@ public class CollisionWithDeathZones : MonoBehaviour
                 else
                 {
                     GetComponent<CharacterManagement>().m_currentHealth--;
+                    /*
                     if (GetComponent<CharacterManagement>().m_currentHealth <= 0)
                     {
                         gameObject.SetActive(false);
                     }
+                    */
                 }
             }  
         }

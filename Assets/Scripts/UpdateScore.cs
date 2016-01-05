@@ -46,6 +46,10 @@ public class UpdateScore : MonoBehaviour
                                         "Player 4:     " + m_playerFourScore;
         */
 
-        m_refToOtherScore.GetComponent<ScoreTest>().ScoreUpdatingReturn(m_playerOneScore, m_playerTwoScore, m_playerThreeScore, m_playerFourScore);
+        m_refToOtherScore.GetComponent<ScoreTest>().ScoreUpdatingReturn
+            (m_playerOne.GetComponent<CharacterManagement>().m_currentHealth,
+            m_playerTwo.GetComponent<CharacterManagement>().m_currentHealth,
+            m_playerThree.GetComponent<CharacterManagement>().m_currentHealth,
+            m_playerFour.GetComponent<CharacterManagement>().m_currentHealth);
     }
 }

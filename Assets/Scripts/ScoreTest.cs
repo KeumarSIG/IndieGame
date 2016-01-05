@@ -6,11 +6,15 @@ public class ScoreTest : MonoBehaviour
 {
     public Text[] m_scoresOfPlayers = new Text[4];
     public GameObject m_playerOne;
+    public GameObject m_playerTwo;
+    public GameObject m_playerThree;
+    public GameObject m_playerFour;
 
-	// Use this for initialization
-	void Start ()
+    // Use this for initialization
+    void Start ()
     {
-        ScoreUpdatingReturn(0, 0, 0, 0);
+        int basicHp = m_playerOne.GetComponent<CharacterManagement>().m_currentHealth;
+        ScoreUpdatingReturn(basicHp, basicHp, basicHp, basicHp);
 	}
 
     public void ScoreUpdatingReturn(int a, int b, int c, int d)
