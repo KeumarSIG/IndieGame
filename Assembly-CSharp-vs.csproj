@@ -75,6 +75,7 @@
      <Compile Include="Assets\Scripts\UpdateScore.cs" />
      <Compile Include="Assets\Shaders\Ascii\Scripts\Ascii.cs" />
      <Compile Include="Assets\Shaders\Retro Pixel\Scripts\RetroPixel.cs" />
+     <Compile Include="Assets\SimplePixelizer\SimplePixelizer.cs" />
      <Compile Include="Assets\Sprites\NewCharacterMovement.cs" />
      <None Include="Assets\Standard Assets\Effects\GlassRefraction\Shaders\GlassStainedBumpDistort.shader" />
      <None Include="Assets\Shaders\Retro Pixel\Resources\Shaders\RetroPixel5.shader" />
@@ -128,6 +129,7 @@
      <None Include="Assets\Standard Assets\Effects\ToonShading\Shaders\ToonLitOutline.shader" />
      <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\Contrast Stretch\Luminance.shader" />
      <None Include="Assets\Standard Assets\Effects\ToonShading\Shaders\ToonLit.shader" />
+     <None Include="Assets\SimplePixelizer\ReadMe.txt" />
      <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\ColorCorrectionSelective.shader" />
      <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\_DepthOfField\Bokeh34.shader" />
      <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\CameraMotionBlurDX11.shader" />
