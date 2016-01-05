@@ -78,6 +78,7 @@
      <Compile Include="Assets\Shaders\Retro Pixel\Scripts\RetroPixel.cs" />
      <Compile Include="Assets\SimplePixelizer\SimplePixelizer.cs" />
      <Compile Include="Assets\Sprites\NewCharacterMovement.cs" />
+     <Compile Include="Assets\VictoryCheck.cs" />
      <None Include="Assets\Standard Assets\Effects\GlassRefraction\Shaders\GlassStainedBumpDistort.shader" />
      <None Include="Assets\Shaders\Retro Pixel\Resources\Shaders\RetroPixel5.shader" />
      <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\_BloomAndFlares\BlendOneOne.shader" />

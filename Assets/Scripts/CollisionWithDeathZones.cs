@@ -12,6 +12,8 @@ public class CollisionWithDeathZones : MonoBehaviour
 	[Tooltip("Ref to gamefeel manager")]
 	public GameObject m_refToGameFeel;
 
+    public GameObject m_checkVictory;
+
     // =====
     // Respawn position variables
     // =====
@@ -149,7 +151,9 @@ public class CollisionWithDeathZones : MonoBehaviour
                     }
                     */
                 }
-            }  
+            }
+
+            m_checkVictory.GetComponent<VictoryCheck>().CheckVictory();
         }
     }   
 }
