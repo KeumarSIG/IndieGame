@@ -18,6 +18,8 @@ public class CollisionWithFloor : MonoBehaviour
 	{
 		if (coll.gameObject.tag == "Floor")
 		{
+            this.GetComponent<CharacterManagement>().m_loseLife = true;
+
             if (m_referenceToCharacterMovement.m_canMove == false)
             {
                 m_referenceToCharacterMovement.m_canMove = true; // used when the player respawns

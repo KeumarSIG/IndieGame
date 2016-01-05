@@ -42,7 +42,6 @@ public class CollisionWithDeathZones : MonoBehaviour
     void Start()
     {
         m_hasScoredPoints = false;
-
     }
 
     // =====
@@ -52,13 +51,16 @@ public class CollisionWithDeathZones : MonoBehaviour
     {
         if (other.gameObject.tag == "DeathZone" && this.gameObject.tag == "Player" /*&& m_hasScoredPoints == false*/)
         {
-			UpdateScore refToUpdateScore = m_scoreManager.GetComponent<UpdateScore>();
+            UpdateScore refToUpdateScore = m_scoreManager.GetComponent<UpdateScore>();
             CharacterManagement refToCharacterManagement = GetComponent<CharacterManagement>();
-            m_hasScoredPoints = true;
+            m_hasScoredPoints = true;            
+
 
             // Particles that show the player is "dead"
             GameObject clone = Instantiate(m_playerDeath, this.transform.position, Quaternion.identity) as GameObject;
             Destroy(clone, clone.GetComponent<ParticleSystem>().duration);
+
+
 
             // Move player's position
             m_randomSpawnPosition = new Vector3(Random.Range(m_minX, m_maxX),
@@ -70,13 +72,16 @@ public class CollisionWithDeathZones : MonoBehaviour
             this.transform.position = m_randomSpawnPosition;
 
  
-
+            // If player suicides
             if (refToCharacterManagement.m_lastPlayerWhoHit == 0)
             {
 				switch (refToCharacterManagement.m_playerNumber)
 				{
 					case 1:
-						if (refToUpdateScore.m_playerOneScore > 0) refToUpdateScore.m_playerOneScore--;
+                        if (refToUpdateScore.m_playerOneScore > 0)
+                        {
+                            refToUpdateScore.m_playerOneScore--;
+                        }
 						break;
 						
 					case 2:
@@ -93,12 +98,15 @@ public class CollisionWithDeathZones : MonoBehaviour
 				}
             }
 
+            // else it means he scored some points
             else
             {
+                
+
                 switch (refToCharacterManagement.m_lastPlayerWhoHit)
                 {
                     case 1:
-						refToUpdateScore.m_playerOneScore++;
+                        refToUpdateScore.m_playerOneScore++;
                         break;
 
                     case 2:
@@ -118,6 +126,28 @@ public class CollisionWithDeathZones : MonoBehaviour
             m_scoreManager.GetComponent<UpdateScore>().ScoreUpdating(); // Updates the score of the game
 			refToCharacterManagement.m_lastPlayerWhoHit = 0;
 			m_refToGameFeel.GetComponent<Gamefeel>().GamefeelTrigger("ScreenShake", "Default");
+
+
+
+            // Reduce HP by 1
+            if (this.GetComponent<CharacterManagement>().m_loseLife == true)
+            {
+                this.GetComponent<CharacterManagement>().m_loseLife = false;
+
+                if (GetComponent<CharacterManagement>().m_currentHealth <= 0)
+                {
+                    gameObject.SetActive(false);
+                }
+
+                else
+                {
+                    GetComponent<CharacterManagement>().m_currentHealth--;
+                    if (GetComponent<CharacterManagement>().m_currentHealth <= 0)
+                    {
+                        gameObject.SetActive(false);
+                    }
+                }
+            }  
         }
     }   
 }

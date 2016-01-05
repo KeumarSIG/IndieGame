@@ -30,7 +30,7 @@ public class Kendo : MonoBehaviour
 
             thisCharacterManagement.m_rb.velocity = Vector3.zero;
             thisCharacterManagement.m_speed = 0;
-            thisCharacterManagement.m_canMove = false;
+            //thisCharacterManagement.m_canMove = false;
             StartCoroutine(lol());
 
             Vector3 thisCharDir = GetComponentInParent<CharacterManagement>().m_lastDir; // Uses the direction of the attacking player to bump the enemy in the same direction.
@@ -38,6 +38,7 @@ public class Kendo : MonoBehaviour
 
             refToOtherPlayer.m_kendoBumped = true; // Tell the bumped character he is bumped (used so that he can jump to reduce the bump intensity)
 		
+            // Slow motion trigger
 			int triggerSlowMotion = Random.Range(0, 100);
 			if (triggerSlowMotion <= m_chanceToTriggerSlowMotion)
 			{             
@@ -46,9 +47,11 @@ public class Kendo : MonoBehaviour
 		}
 	}
 
+    
     IEnumerator lol()
     {
         yield return new WaitForSeconds(0.4f);
         thisCharacterManagement.m_canMove = true;
     }
+    
 }

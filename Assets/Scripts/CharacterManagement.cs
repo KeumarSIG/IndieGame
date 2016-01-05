@@ -23,6 +23,14 @@ public class CharacterManagement : MonoBehaviour
     string button_grappin_horizontal;
     string button_grappin_vertical;
 
+
+
+    // Number of life
+    public int m_currentHealth;
+    public bool m_loseLife = true;
+
+
+
     // MULTI
 
     // Movement related (mostly speed, but not only)
@@ -103,7 +111,7 @@ public class CharacterManagement : MonoBehaviour
     [Tooltip("The sound associated with player's death")]
     public AudioClip m_deathAudio;
 
-	[HideInInspector] public int m_playerScore;
+	//[HideInInspector] public int m_playerScore;
 	
 
 	//AudioSource m_thisAudioSource; // ref to this audiosource component
