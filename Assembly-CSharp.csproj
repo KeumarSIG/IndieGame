@@ -47,7 +47,6 @@
   </ItemGroup>
   <ItemGroup>
      <Compile Include="Assets\Asset Store\Lava_Flowing_Shader\Scripts\ScrollingUVs_Layers.cs" />
-     <Compile Include="Assets\CheckNumberPlayers.cs" />
      <Compile Include="Assets\Scripts\AnisoDrag.cs" />
      <Compile Include="Assets\Scripts\BasicHazardMovement.cs" />
      <Compile Include="Assets\Scripts\BonusArmor.cs" />
@@ -56,6 +55,7 @@
      <Compile Include="Assets\Scripts\Bumper.cs" />
      <Compile Include="Assets\Scripts\CameraPosition.cs" />
      <Compile Include="Assets\Scripts\CharacterManagement.cs" />
+     <Compile Include="Assets\Scripts\CheckNumberPlayers.cs" />
      <Compile Include="Assets\Scripts\CollisionWithDeathZones.cs" />
      <Compile Include="Assets\Scripts\CollisionWithFloor.cs" />
      <Compile Include="Assets\Scripts\DestroyAfterAnimation.cs" />
@@ -70,6 +70,7 @@
      <Compile Include="Assets\Scripts\HazardMovement.cs" />
      <Compile Include="Assets\Scripts\Kendo.cs" />
      <Compile Include="Assets\Scripts\RotatorBehaviour.cs" />
+     <Compile Include="Assets\Scripts\ScoreTest.cs" />
      <Compile Include="Assets\Scripts\SelectLevelTemporary.cs" />
      <Compile Include="Assets\Scripts\Teleport.cs" />
      <Compile Include="Assets\Scripts\UpdateScore.cs" />

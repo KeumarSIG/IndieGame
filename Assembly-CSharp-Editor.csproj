@@ -60,6 +60,7 @@
      <Compile Include="Assets\Editor\ImageEffects\SunShaftsEditor.cs" />
      <Compile Include="Assets\Editor\ImageEffects\TonemappingEditor.cs" />
      <Compile Include="Assets\Editor\ImageEffects\VignetteAndChromaticAberrationEditor.cs" />
+     <Compile Include="Assets\Editor\uGUITools.cs" />
      <Compile Include="Assets\Shaders\Ascii\Scripts\Editor\AsciiEditor.cs" />
      <Compile Include="Assets\Shaders\Ascii\Scripts\Editor\AsciiEditorHelper.cs" />
      <Compile Include="Assets\Shaders\Retro Pixel\Editor\RetroPixelEditor.cs" />
