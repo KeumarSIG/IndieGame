@@ -25,12 +25,13 @@ public class Explosion : MonoBehaviour
 			
 			foreach (Collider hit in hitColliders)
 			{
-                if (hit.gameObject.tag == "Player")
+                if (hit.gameObject.tag == "Player" && hit.gameObject.tag != "Kendo")
                 {
                     Rigidbody rb = hit.GetComponent<Rigidbody>();
                     if (rb != null)
                     {
                         rb.AddExplosionForce(m_power, exploPosition, m_radius, m_explosiveLift, ForceMode.Impulse);
+                        
                     }
                 }
 			}
@@ -43,8 +44,14 @@ public class Explosion : MonoBehaviour
 		{
 			m_explosion = true;
 			m_thisAnimator.SetBool("isBumping", true);
-			//print (m_thisAnimator.GetBool("isBumping"));
-		}
+            if (other.GetComponent<CharacterManagement>().m_kendoStick.activeInHierarchy == true) other.GetComponent<CharacterManagement>().m_kendoStick.SetActive(false);
+        }
+
+        if (other.gameObject.tag == "Kendo")
+        {
+            //if (other.enabled == true) other.enabled = false;
+            Physics.IgnoreCollision(GetComponent<Collider>(), other);
+        }
 	}
 
 	void OnTriggerExit()

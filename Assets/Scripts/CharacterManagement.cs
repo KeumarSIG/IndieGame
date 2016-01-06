@@ -154,8 +154,8 @@ public class CharacterManagement : MonoBehaviour
 	}
 	
     void Update()
-    {  
-		// Movement
+    {
+        // Movement
 		Vector3 charDir = new Vector3(Input.GetAxisRaw(button_horizontal), 0, Input.GetAxisRaw(button_vertical));
         if (charDir != Vector3.zero) m_lastDir = charDir;
         transform.rotation = Quaternion.LookRotation(m_lastDir);
@@ -193,6 +193,7 @@ public class CharacterManagement : MonoBehaviour
 
 
 		// Jumping might be better in fixed update, isn't it ? 
+        /*
 		if (Input.GetButtonDown(button_jump) == true && IsGrounded())
 		{
             m_isJumping = true;
@@ -212,6 +213,7 @@ public class CharacterManagement : MonoBehaviour
             Vector3 directionStick = new Vector3((Input.GetAxisRaw(button_grappin_horizontal)), 0f, -Input.GetAxisRaw(button_grappin_vertical)).normalized;
             GetComponent<Grappin>().lancerGrappin(m_grappin, directionStick);
         }
+        */
 
         // Restart level
         if (Input.GetButtonDown(button_restart) == true)
@@ -225,14 +227,16 @@ public class CharacterManagement : MonoBehaviour
 		}
 
         // Boost
+        
         {
             if (Input.GetButtonDown(button_boost) == true)
             {
-                m_maxSpeed = 60;
-                m_speed = 60;
+                m_maxSpeed = 25;
+                m_speed = 25;
                 StartCoroutine(BoostTimer());
             }                    
         }
+        
     }
 
     IEnumerator BoostTimer()
