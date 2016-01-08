@@ -193,8 +193,7 @@ public class CharacterManagement : MonoBehaviour
 
 
 		// Jumping might be better in fixed update, isn't it ? 
-        /*
-		if (Input.GetButtonDown(button_jump) == true && IsGrounded())
+        if (Input.GetButtonDown(button_jump) == true && IsGrounded())
 		{
             m_isJumping = true;
 
@@ -208,6 +207,7 @@ public class CharacterManagement : MonoBehaviour
 		}
 
         // Grappin
+        /*
         if ((Input.GetAxisRaw(button_grappin_horizontal) != 0f || Input.GetAxisRaw(button_grappin_vertical) != 0f))
         {
             Vector3 directionStick = new Vector3((Input.GetAxisRaw(button_grappin_horizontal)), 0f, -Input.GetAxisRaw(button_grappin_vertical)).normalized;
@@ -231,8 +231,8 @@ public class CharacterManagement : MonoBehaviour
         {
             if (Input.GetButtonDown(button_boost) == true)
             {
-                m_maxSpeed = 25;
-                m_speed = 25;
+                m_maxSpeed = 40;
+                m_speed = 40;
                 StartCoroutine(BoostTimer());
             }                    
         }
